@@ -1,4 +1,4 @@
-package com.mycompany.proyecto_lbd_template;
+package com.mycompany.lenguajes_de_bases_de_datos;
 
 import javafx.geometry.Insets;
 import javafx.scene.Scene;

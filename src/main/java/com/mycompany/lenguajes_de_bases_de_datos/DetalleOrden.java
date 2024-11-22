@@ -1,4 +1,4 @@
-package com.mycompany.proyecto_lbd_template;
+package com.mycompany.lenguajes_de_bases_de_datos;
 
 public class DetalleOrden {
     private int idDetalleOrden;

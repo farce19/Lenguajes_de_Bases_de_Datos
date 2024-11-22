@@ -1,4 +1,4 @@
-package com.mycompany.proyecto_lbd_template;
+package com.mycompany.lenguajes_de_bases_de_datos;
 
 public class Categoria implements Identificable {
     private int id;
