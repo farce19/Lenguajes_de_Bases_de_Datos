@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>Seleccionar Reportes</title>
+        <style>
+            table {
+                width: 100%;
+                border-collapse: collapse;
+            }
+            table, th, td {
+                border: 1px solid black;
+            }
+            th, td {
+                padding: 8px;
+                text-align: left;
+            }
+            h1, h2 {
+                color: #333;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>Seleccionar Datos para el Reporte</h1>
+
+        <!-- Formulario de selección -->
+        <form action="/reporte" method="get">
+            <label><input type="checkbox" name="datos" value="totalVentasCliente"> Total Ventas por Cliente</label><br>
+            <label><input type="checkbox" name="datos" value="promedioVentasCliente"> Promedio Ventas por Cliente</label><br>
+            <label><input type="checkbox" name="datos" value="cantidadVentasMes"> Cantidad de Ventas por Mes</label><br>
+            <label><input type="checkbox" name="datos" value="totalGananciasMes"> Total Ganancias por Mes</label><br>
+            <label><input type="checkbox" name="datos" value="repuestosMasVendidos"> Repuestos Más Vendidos</label><br>
+            <label><input type="checkbox" name="datos" value="repuestosSinVentas"> Repuestos Sin Ventas</label><br>
+            <label><input type="checkbox" name="datos" value="clientesMayorConsumo"> Clientes Mayor Consumo</label><br>
+            <label><input type="checkbox" name="datos" value="repuestosStockCritico"> Repuestos en Stock Crítico</label><br>
+            <label><input type="checkbox" name="datos" value="productosPendientesProveedor"> Productos Pendientes por Proveedor</label><br>
+            <label><input type="checkbox" name="datos" value="ordenesPendientesProveedor"> Órdenes Pendientes por Proveedor</label><br>
+            <label><input type="checkbox" name="datos" value="proveedoresActivos"> Proveedores Activos</label><br>
+            <label><input type="checkbox" name="datos" value="ventasPorCategoria"> Ventas por Categoría</label><br>
+            <label><input type="checkbox" name="datos" value="historialComprasCliente"> Historial de Compras por Cliente</label><br>
+            <button type="submit">Generar Reporte</button>
+        </form>
+
+        <!-- Mostrar reportes seleccionados -->
+        <div th:if="${datosSeleccionados != null and #lists.contains(datosSeleccionados, 'totalVentasCliente')}">
+            <h2>Total Ventas por Cliente</h2>
+            <p>Total Ventas Cliente ID 1: <span th:text="${totalVentasCliente}">0</span></p>
+        </div>
+
+
+        <div th:if="${#lists.contains(datosSeleccionados, 'promedioVentasCliente')}">
+            <h2>Promedio de Ventas por Cliente</h2>
+            <p>Promedio Ventas Cliente ID 1: <span th:text="${promedioVentasCliente}">0</span></p>
+        </div>
+
+        <div th:if="${#lists.contains(datosSeleccionados, 'cantidadVentasMes')}">
+            <h2>Cantidad de Ventas por Mes</h2>
+            <p>Total Ventas Mes Actual: <span th:text="${cantidadVentasMes}">0</span></p>
+        </div>
+
+        <div th:if="${#lists.contains(datosSeleccionados, 'totalGananciasMes')}">
+            <h2>Total Ganancias por Mes</h2>
+            <p>Ganancias Mes Actual: <span th:text="${totalGananciasMes}">0</span></p>
+        </div>
+
+        <div th:if="${#lists.contains(datosSeleccionados, 'repuestosMasVendidos')}">
+            <h2>Repuestos Más Vendidos</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Repuesto</th>
+                        <th>Total Vendido</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="repuesto : ${repuestosMasVendidos}">
+                        <td th:text="${repuesto['repuesto']}">Repuesto</td>
+                        <td th:text="${repuesto['total_vendido']}">0</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div th:if="${#lists.contains(datosSeleccionados, 'repuestosSinVentas')}">
+            <h2>Repuestos Sin Ventas</h2>
+            <ul>
+                <li th:each="repuesto : ${repuestosSinVentas}" th:text="${repuesto['nombre']}">Repuesto</li>
+            </ul>
+        </div>
+
+        <div th:if="${#lists.contains(datosSeleccionados, 'clientesMayorConsumo')}">
+            <h2>Clientes con Mayor Consumo</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Apellido</th>
+                        <th>Total Gastado</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="cliente : ${clientesMayorConsumo}">
+                        <td th:text="${cliente['nombre']}">Nombre</td>
+                        <td th:text="${cliente['apellido']}">Apellido</td>
+                        <td th:text="${cliente['total_gastado']}">0</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </body>
+</html>

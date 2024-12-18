@@ -34,7 +34,7 @@ public class Venta {
     @Transient
     private String nombreCliente;
 
-    // Getters y Setters
+   
     public Long getId() {
         return id;
     }
@@ -75,12 +75,7 @@ public class Venta {
         this.nombreCliente = nombreCliente;
     }
 
-    // Métodos adicionales
-    /**
-     * Devuelve una representación de la venta en formato de texto.
-     *
-     * @return una cadena que describe la venta.
-     */
+    
     @Override
     public String toString() {
         return "Venta{"
