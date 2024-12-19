@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalle Ordenes</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="mb-4">Detalle de Órdenes - Orden ID: <span th:text="${idOrden}"></span></h1>
+
+        <!-- Formulario para agregar un nuevo detalle -->
+        <form th:action="@{/detalle-ordenes/guardar}" th:object="${nuevoDetalle}" method="post">
+            <input type="hidden" id="idOrden" name="idOrden" th:value="${idOrden}" />
+
+            <div class="mb-3">
+                <label for="idRepuesto" class="form-label">Repuesto:</label>
+                <select id="idRepuesto" th:field="*{idRepuesto}" class="form-select" required>
+                    <option th:each="repuesto : ${repuestos}" 
+                            th:value="${repuesto.id}" 
+                            th:text="${repuesto.nombre}"></option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="cantidad" class="form-label">Cantidad:</label>
+                <input type="number" id="cantidad" th:field="*{cantidad}" class="form-control" required />
+            </div>
+            <div class="mb-3">
+                <label for="precioUnitario" class="form-label">Precio Unitario:</label>
+                <input type="number" step="0.01" id="precioUnitario" th:field="*{precioUnitario}" class="form-control" required />
+            </div>
+            <button type="submit" class="btn btn-primary">Guardar Detalle</button>
+        </form>
+
+        <!-- Tabla de detalles -->
+        <table class="table table-striped mt-4">
+            <thead>
+                <tr>
+                    <th>ID Detalle</th>
+                    <th>ID Orden</th>
+                    <th>ID Repuesto</th>
+                    <th>Cantidad</th>
+                    <th>Precio Unitario</th>
+                    <th>Subtotal</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="detalle : ${detalles}">
+                    <td th:text="${detalle.idDetalleOrden}"></td>
+                    <td th:text="${detalle.idOrden}"></td>
+                    <td th:text="${detalle.idRepuesto}"></td>
+                    <td th:text="${detalle.cantidad}"></td>
+                    <td th:text="${detalle.precioUnitario}"></td>
+                    <td th:text="${detalle.subtotal}"></td>
+                    <td>
+                        <a th:href="@{/detalle-ordenes/editar/{idDetalleOrden}(idDetalleOrden=${detalle.idDetalleOrden}, idOrden=${idOrden})}" 
+                           class="btn btn-warning btn-sm">Editar</a>
+                        <a th:href="@{/detalle-ordenes/eliminar/{idDetalleOrden}(idDetalleOrden=${detalle.idDetalleOrden}, idOrden=${idOrden})}" 
+                           class="btn btn-danger btn-sm">Eliminar</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Botón para regresar -->
+        <a href="/ordenes" class="btn btn-secondary mt-3">Regresar</a>
+    </div>
+</body>
+</html>

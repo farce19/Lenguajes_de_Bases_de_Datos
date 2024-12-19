@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <title>Gestión de Órdenes de Compra</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    </head>
+    <body>
+        <div class="container mt-5">
+            <h1 class="mb-4">Gestión de Órdenes de Compra</h1>
+
+            <!-- Formulario para registrar/editar orden -->
+            <form th:action="@{/ordenes-compra/guardar}" th:object="${nuevaOrden}" method="post" class="mb-4">
+                <input type="hidden" th:field="*{id}">
+                <div class="mb-3">
+                    <label for="idProveedor" class="form-label">Proveedor:</label>
+                    <select id="idProveedor" th:field="*{idProveedor}" class="form-select" required>
+                        <option th:each="proveedor : ${proveedores}" th:value="${proveedor.id}" th:text="${proveedor.nombre}"></option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="fechaOrden" class="form-label">Fecha:</label>
+                    <input type="date" id="fechaOrden" th:field="*{fechaOrden}" class="form-control" required>
+                </div>
+                <div th:if="${#fields.hasErrors('fechaOrden')}" class="text-danger">
+                    <p th:errors="*{fechaOrden}">Invalid date</p>
+                </div>
+
+
+                <div class="mb-3">
+                    <label for="estadoOrden" class="form-label">Estado:</label>
+                    <select id="estadoOrden" th:field="*{estadoOrden}" class="form-select" required>
+                        <option value="Pendiente">Pendiente</option>
+                        <option value="Completada">Completada</option>
+                        <option value="Cancelada">Cancelada</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary">Guardar</button>
+            </form>
+
+            <!-- Listado de órdenes -->
+            <table class="table table-dark table-striped">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Proveedor</th>
+                        <th>Fecha</th>
+                        <th>Estado</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="orden : ${ordenes}">
+                        <td th:text="${orden.id}"></td>
+                        <td th:text="${orden.idProveedor}"></td>
+                        <td th:text="${#dates.format(orden.fechaOrden, 'yyyy-MM-dd')}"></td>
+                        <td th:text="${orden.estadoOrden}"></td>
+                        <td>
+                            <a th:href="@{/ordenes-compra/editar/{id}(id=${orden.id})}" class="btn btn-warning btn-sm">Editar</a>
+                            <a th:href="@{/ordenes-compra/eliminar/{id}(id=${orden.id})}" class="btn btn-danger btn-sm">Eliminar</a>
+                            <a th:href="@{/detalle-ordenes/{idOrden}(idOrden=${orden.id})}" class="btn btn-info btn-sm">Detalles</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </body>
+</html>
